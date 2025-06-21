@@ -1,79 +1,88 @@
-# Week_1_Carbon_Emission
+# 🌍 Climate & Emissions Data Cleaning Project
 
-🌍 Climate & Emissions Data Cleaning Project
-This Python project focuses on cleaning and restructuring a complex country-level climate and emissions dataset (Carbon_Emission.xls) to prepare it for further analysis and machine learning modeling.
+This project focuses on cleaning and transforming a complex Excel-based dataset (`Carbon_Emission.xls`) that includes country-level environmental, economic, demographic, and energy-related indicators. The goal is to prepare the data for meaningful analysis and machine learning modeling.
 
-🔍 Objective
-To analyze the relationship between country-specific features—such as greenhouse gas emissions, demographics, land use, economic indicators, and health infrastructure—and their impact on climate indicators like CO₂ emissions and precipitation.
+---
 
-📊 Dataset Overview
-The dataset includes:
+## 🎯 Objective
 
-Greenhouse Gases: CO₂, CH₄, N₂O, and others
+- Analyze how country-specific parameters (e.g., population, GDP, energy use) affect climate indicators like CO₂ emissions and precipitation.
+- Restructure the dataset for machine learning by organizing features properly and handling missing or inconsistent data.
 
-Demographics: Population, Urban growth
+---
 
-Economy: GDP, GNI, FDI
+## 📊 Dataset Features
 
-Land Use: Cereal yield, Protected areas
+The dataset includes country-level yearly data on:
 
-Climate: Precipitation, Disasters
+- **Greenhouse Gas Emissions**: CO₂, CH₄, N₂O, etc.
+- **Demographics**: Population, Urbanization, Growth
+- **Economy**: GDP, GNI, FDI
+- **Land Use**: Cereal Yield, Protected Areas
+- **Climate**: Precipitation, Disasters
+- **Energy**: Electricity Access, Energy Use
+- **Health**: Mortality Rate, Infrastructure
 
-Energy & Health: Electricity access, Mortality rates
+---
 
-🧹 Data Cleaning & Transformation Steps
-Load and Preview Data
+## 🔧 Data Cleaning & Transformation Workflow
 
-Load Excel file using pandas.
+### ✅ Steps Performed:
 
-Preview structure, column names, and data types.
+1. **Load Excel File**  
+   - Read using `pandas.ExcelFile` and extract the `Data` sheet.
 
-Remove Irrelevant Entries
+2. **Initial Cleaning**  
+   - Removed rows where `'SCALE'` or `'Decimals'` is `'Text'`
+   - Dropped columns: `'Country name'`, `'Series code'`, `'SCALE'`, `'Decimals'`
 
-Drop rows where 'SCALE' or 'Decimals' is 'Text'.
+3. **Handle Missing Data**  
+   - Replaced `'..'`, empty strings, and `'N/A'` with `NaN`
+   - Converted all year columns to numeric
 
-Remove unused columns: 'SCALE', 'Series code', 'Country name'.
+4. **Feature Renaming**  
+   - Simplified verbose names in `'Series name'` to short labels (e.g., `CO2 emissions, total` → `co2_ttl`)
 
-Handle Missing Values
+5. **Data Reshaping**  
+   - Used `pd.melt()` to transform each feature into a long format (`country`, `year`, `value`)
+   - Merged all features into a single dataset using `reduce()` on `country` and `year`
 
-Replace '..', empty strings, and 'N/A' with NaN.
+6. **Missing Value Analysis & Filtering**  
+   - Filtered out years and countries with excessive missing values
+   - Dropped columns with more than 20 missing values
+   - Removed rows with any remaining NaN
 
-Convert year columns to numeric types.
+7. **Export Final Dataset**  
+   - Final clean dataset exported as `data_cleaned.csv`
 
-Rename Features
+---
 
-Simplify Series name values into readable short feature names using a dictionary.
+## 📁 Output
 
-Restructure Data
+- **Cleaned Dataset**: `data_cleaned.csv`  
+  Ready for modeling or further EDA.
 
-Use pd.melt() to reshape data into a long format with ['country', 'year', feature].
+---
 
-Merge Features
+## 🛠 Tech Stack
 
-Combine all variables into a single DataFrame with country-year as keys.
+- **Language**: Python 3.11+
+- **Libraries**:  
+  - `pandas`  
+  - `numpy`  
+  - `matplotlib`  
+  - `seaborn`
 
-Missing Value Analysis & Filtering
+---
 
-Remove years and countries with too many missing values.
+## 📌 How to Use
 
-Drop columns with excessive missing values.
+```bash
+# Install dependencies
+pip install pandas numpy matplotlib seaborn
 
-Final cleanup with dropna() to ensure a complete dataset.
+# Run the script
+python clean_data.py
 
-Export Cleaned Dataset
-
-Export the final cleaned dataset to data_cleaned.csv for downstream ML use.
-
-🛠️ Technologies Used
-Python 3.11+
-
-Pandas
-
-NumPy
-
-Matplotlib / Seaborn (for visualizations)
-
-📁 Output
-Final clean dataset: data_cleaned.csv
-
-Ready for modeling and exploratory data analysis (EDA)
+# Output file
+data_cleaned.csv
